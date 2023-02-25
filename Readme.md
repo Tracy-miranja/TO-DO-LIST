@@ -47,7 +47,7 @@ One attachment
  
 ## 🚀 Live Demo <a name="live-demo"></a>
  
-- [<a href="#">LIVE DEMO]
+- [>LIVE DEMO NOT AVAILABLE]
  
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
  
@@ -146,7 +146,7 @@ I would like to thank  all my Mricronauts partners for support and microverse fo
  
 ## 📝 License <a name="license"></a>
  
-This project is [MIT](https://github.com/Tracy-miranja/TO-DO-LIST/blob/add-license-1/LICENCE licensed.
+This project is [MIT](https://github.com/Tracy-miranja/TO-DO-LIST/blob/add-license-1/LICENCE) licensed.
  
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 README.md
