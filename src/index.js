@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import './style.css';
 
-import { updateCompletedStatus, clearCompleted } from './status.js';
+import { updateCompletedStatus, clearCompleted } from './modules/status.js';
 
 const taskList = document.getElementById('task-list');
 const form = document.querySelector('form');
@@ -21,32 +21,56 @@ function renderTasks() {
       localStorage.setItem('items', JSON.stringify(items));
       renderTasks();
     });
+
     const labelWrapper = document.createElement('div');
     labelWrapper.classList.add('label-wrapper');
+
     const label = document.createElement('label');
     label.innerText = task.description;
     label.style.textDecoration = task.completed ? 'line-through' : 'none';
-    labelWrapper.appendChild(label);
+    label.addEventListener('dblclick', () => {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = task.description;
+      input.classList.add('edit-input');
+      input.addEventListener('blur', () => {
+        task.description = input.value;
+        localStorage.setItem('items', JSON.stringify(items));
+        renderTasks();
+      });
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          task.description = input.value;
+          localStorage.setItem('items', JSON.stringify(items));
+          renderTasks();
+        }
+      });
+      label.replaceWith(input);
+      input.focus();
+    });
+
     const dotsIcon = document.createElement('i');
     dotsIcon.classList.add('fas', 'fa-ellipsis-v', 'dots-icon');
     dotsIcon.addEventListener('click', () => {
-      // eslint-disable-next-line no-use-before-define
       deleteIcon.style.display = 'block';
       dotsIcon.style.display = 'none';
     });
-    labelWrapper.appendChild(dotsIcon);
+
     const deleteIcon = document.createElement('i');
     deleteIcon.classList.add('fas', 'fa-trash', 'delete-icon');
     deleteIcon.addEventListener('click', () => {
-      // eslint-disable-next-line no-use-before-define
       deleteTask(task.index);
     });
+    labelWrapper.appendChild(checkbox);
+    labelWrapper.appendChild(label);
+    labelWrapper.appendChild(dotsIcon);
     labelWrapper.appendChild(deleteIcon);
-    listItem.appendChild(checkbox);
+
     listItem.appendChild(labelWrapper);
     taskList.appendChild(listItem);
   });
 }
+
 
 function addTask(description) {
   const newTask = {
