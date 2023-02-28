@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "Live Preview",
+      "workspacePath": "c:\\Users\\ADMIN\\TO-DO-LIST",
+      "problemMatcher": [],
+      "label": "Live Preview: Run Server"
+    },
+    {
+      "type": "npm",
+      "script": "test",
+      "group": "test",
+      "problemMatcher": [],
+      "label": "npm: test",
+      "detail": "echo \"Error: no test specified\" && exit 1"
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "problemMatcher": ["$jshint"],
+      "label": "npm: start",
+      "detail": "webpack serve --open"
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: build",
+      "detail": "webpack --config webpack.config.js"
+    }
+  ]
+}

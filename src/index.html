@@ -6,19 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Getting Started</title>
     <script src="https://unpkg.com/lodash@4.17.20"></script>
+    <script
+      src="https://kit.fontawesome.com/58789452ae.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-tnFhJi5NIVwIJAVpf1IyNtZBkIObaMR0tuWJpxOZmm9OMlyM/mz+oeIwJ8d3bLaF+2TwuV7FkbK/BiduV7X9tA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-1mjjl75tOw/LtLYxpFQzdyQUt4s9L4x4+mq4jJyM/tRcx83EzS/kCwJ3TzTdqKM1ai+9XpLFlU6yAvhGJHg6+w==" crossorigin="anonymous" />
   </head>
   <body>
     <main>
       <header class="head">
         <h1>Today's To Do List</h1>
+        <i class="fa-solid fa-arrows-rotate" style="margin-top: 27px"></i>
       </header>
       <form>
         <label for="item"></label>
-        <input type="text" id="item" placeholder="Add to your list" required />
-        <div id="task-list" class="task"></div>
+        <div class="input-container">
+          <input type="text" id="item" placeholder="Add to your list.... " required />
+          <span class="input-icon"><i class="fas fa-plus fa-lg"></i></span>
+        </div>
+        <div id="task-list" class="task"><ul id="task-list"></ul></div>
         <button type="submit" id="submit">Clear all completed</button>
       </form>
     </main>
     <script src="./src/index.js"></script>
+    <script type="module" src="./src/localstore.js"></script>
+    <script type="module" src="./src/clear.js"></script>
   </body>
+
+  <script></script>
 </html>
