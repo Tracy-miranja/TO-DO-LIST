@@ -38,6 +38,10 @@ main {
   background-color: rgb(6, 212, 6);
 }
 
+.head i{
+  margin-top: 27px
+}
+
 .fa-solid {
   margin-top: 50px;
   margin-right: 15px;
