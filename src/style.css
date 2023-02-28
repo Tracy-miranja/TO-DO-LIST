@@ -58,15 +58,12 @@ input {
   padding-left: 1px;
 }
 
-#item{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 #item {
   width: 99%;
   height: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 ::placeholder {
@@ -88,7 +85,7 @@ li {
   list-style: none;
   border-bottom: 1px solid grey;
   height: 60px;
-  display:flex ;
+  display: flex;
   flex-direction: row;
 }
 
@@ -100,11 +97,6 @@ li {
 }
 
 .dots-icon {
-  cursor: pointer;
-}
-
-.delete-icon {
-  display: none;
   cursor: pointer;
 }
 
@@ -139,10 +131,6 @@ li {
   cursor: pointer;
 }
 
-#task-list li .delete-button {
-  display: none;
-}
-
 #task-list li .three-dots {
   cursor: pointer;
 }
@@ -151,4 +139,5 @@ li {
   color: red;
   margin-left: 1rem;
   cursor: pointer;
+  display: none;
 }
