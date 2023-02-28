@@ -1,12 +1,11 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-use-before-define */
 // eslint-disable-next-line no-unused-vars
+import _ from 'lodash';
 import './style.css';
 
-const tasks = [
-  { description: 'Buy milk', completed: false, index: 0 },
-  { description: 'Do laundry', completed: true, index: 1 },
-  { description: 'Call mom', completed: false, index: 2 },
-  { description: 'Take out the trash', completed: true, index: 3 },
-];
+const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
 function renderTasks() {
   const taskList = document.getElementById('task-list');
   taskList.innerHTML = '';
@@ -18,6 +17,7 @@ function renderTasks() {
     checkbox.checked = task.completed;
     checkbox.addEventListener('click', () => {
       task.completed = !task.completed;
+      localStorage.setItem('tasks', JSON.stringify(tasks));
       renderTasks();
     });
     const label = document.createElement('label');
@@ -28,4 +28,60 @@ function renderTasks() {
     taskList.appendChild(listItem);
   });
 }
+
+function addTask(description) {
+  const newTask = {
+    description,
+    completed: false,
+    index: tasks.length,
+  };
+  tasks.push(newTask);
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  renderTasks();
+}
+
+function deleteTask(index) {
+  tasks.splice(index, 1);
+  // eslint-disable-next-line no-return-assign
+  tasks.forEach((task, i) => (task.index = i));
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  renderTasks();
+}
+
+function editTask(index, newDescription) {
+  tasks[index].description = newDescription;
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  renderTasks();
+}
+
+function clearCompletedTasks() {
+  // eslint-disable-next-line no-plusplus
+  for (let i = tasks.length - 1; i >= 0; i--) {
+    if (tasks[i].completed) {
+      tasks.splice(i, 1);
+    }
+  }
+  // eslint-disable-next-line no-return-assign
+  tasks.forEach((task, i) => (task.index = i));
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  renderTasks();
+}
+
+const form = document.querySelector('form');
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const input = document.getElementById('item');
+  const description = input.value.trim();
+  if (description !== '') {
+    addTask(description);
+    input.value = '';
+  }
+});
+
+const clearButton = document.getElementById('submit');
+clearButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  clearCompletedTasks();
+});
+
 renderTasks();
