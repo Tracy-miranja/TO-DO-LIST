@@ -17,12 +17,34 @@ main {
   color: black;
 }
 
+.input-container {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* adjust as needed */
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
 .head {
   width: 100%;
   height: auto;
-
-  /* padding: 5px; */
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
   background-color: rgb(6, 212, 6);
+}
+
+.head i {
+  margin-top: 27px;
+}
+
+.fa-solid {
+  margin-top: 50px;
+  margin-right: 15px;
 }
 
 form {
@@ -43,6 +65,9 @@ input {
 #item {
   width: 99%;
   height: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 ::placeholder {
@@ -64,4 +89,59 @@ li {
   list-style: none;
   border-bottom: 1px solid grey;
   height: 60px;
+  display: flex;
+  flex-direction: row;
+}
+
+.delete-icon {
+  display: none;
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 10px;
+}
+
+.dots-icon {
+  cursor: pointer;
+}
+
+.label-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+}
+
+#task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#task-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+#task-list li .label-wrapper {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+#task-list li label {
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+#task-list li .three-dots {
+  cursor: pointer;
+}
+
+#task-list li .delete-button {
+  color: red;
+  margin-left: 1rem;
+  cursor: pointer;
+  display: none;
 }

@@ -1,87 +1,117 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-use-before-define */
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable no-unused-vars */
 import _ from 'lodash';
 import './style.css';
 
-const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+import { updateCompletedStatus, clearCompleted } from './modules/status.js';
+import addTask from './modules/Add.js';
+import deleteTask from './modules/delete.js';
+
+const taskList = document.getElementById('task-list');
+const form = document.querySelector('form');
+
+let items = JSON.parse(localStorage.getItem('items')) || [];
 
 function renderTasks() {
-  const taskList = document.getElementById('task-list');
   taskList.innerHTML = '';
-  const sortedTasks = tasks.sort((a, b) => a.index - b.index);
-  sortedTasks.forEach((task) => {
+  items.forEach((task) => {
     const listItem = document.createElement('li');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = task.completed;
-    checkbox.addEventListener('click', () => {
-      task.completed = !task.completed;
-      localStorage.setItem('tasks', JSON.stringify(tasks));
+    checkbox.addEventListener('change', () => {
+      updateCompletedStatus(task, items);
+      localStorage.setItem('items', JSON.stringify(items));
       renderTasks();
     });
+
+    const labelWrapper = document.createElement('div');
+    labelWrapper.classList.add('label-wrapper');
+
     const label = document.createElement('label');
     label.innerText = task.description;
     label.style.textDecoration = task.completed ? 'line-through' : 'none';
-    listItem.appendChild(checkbox);
-    listItem.appendChild(label);
+    label.addEventListener('dblclick', () => {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = task.description;
+      input.classList.add('edit-input');
+      input.addEventListener('blur', () => {
+        task.description = input.value;
+        localStorage.setItem('items', JSON.stringify(items));
+        renderTasks();
+      });
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          task.description = input.value;
+          localStorage.setItem('items', JSON.stringify(items));
+          renderTasks();
+        }
+      });
+      label.replaceWith(input);
+      input.focus();
+    });
+
+    const dotsIcon = document.createElement('i');
+    dotsIcon.classList.add('fas', 'fa-ellipsis-v', 'dots-icon');
+    dotsIcon.addEventListener('click', () => {
+      deleteIcon.style.display = 'block';
+      dotsIcon.style.display = 'none';
+    });
+
+    const deleteIcon = document.createElement('i');
+    deleteIcon.classList.add('fas', 'fa-trash', 'delete-icon');
+    deleteIcon.addEventListener('click', () => {
+      deleteTask(items, task.index);
+      localStorage.setItem('items', JSON.stringify(items));
+      renderTasks();
+    });
+    labelWrapper.appendChild(checkbox);
+    labelWrapper.appendChild(label);
+    labelWrapper.appendChild(dotsIcon);
+    labelWrapper.appendChild(deleteIcon);
+
+    listItem.appendChild(labelWrapper);
     taskList.appendChild(listItem);
   });
 }
 
-function addTask(description) {
-  const newTask = {
-    description,
-    completed: false,
-    index: tasks.length,
-  };
-  tasks.push(newTask);
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-  renderTasks();
-}
-
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  // eslint-disable-next-line no-return-assign
-  tasks.forEach((task, i) => (task.index = i));
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-  renderTasks();
-}
-
-function editTask(index, newDescription) {
-  tasks[index].description = newDescription;
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-  renderTasks();
-}
-
-function clearCompletedTasks() {
-  // eslint-disable-next-line no-plusplus
-  for (let i = tasks.length - 1; i >= 0; i--) {
-    if (tasks[i].completed) {
-      tasks.splice(i, 1);
-    }
-  }
-  // eslint-disable-next-line no-return-assign
-  tasks.forEach((task, i) => (task.index = i));
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-  renderTasks();
-}
-
-const form = document.querySelector('form');
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   const input = document.getElementById('item');
-  const description = input.value.trim();
-  if (description !== '') {
-    addTask(description);
-    input.value = '';
-  }
+  const description = input.value;
+  addTask(items, description);
+  localStorage.setItem('items', JSON.stringify(items));
+  renderTasks();
+  input.value = '';
 });
 
 const clearButton = document.getElementById('submit');
-clearButton.addEventListener('click', (event) => {
-  event.preventDefault();
-  clearCompletedTasks();
+clearButton.addEventListener('click', () => {
+  items = clearCompleted(items);
+  localStorage.setItem('items', JSON.stringify(items));
+  renderTasks();
+});
+
+const plusIcon = document.querySelector('.input-icon i');
+plusIcon.addEventListener('click', () => {
+  const input = document.getElementById('item');
+  const description = input.value;
+  addTask(description, items, renderTasks);
+  input.value = '';
+});
+
+const addIcon = document.getElementById('add-icon');
+
+addIcon.addEventListener('click', () => {
+  const input = document.getElementById('item');
+  const description = input.value.trim();
+  if (description) {
+    addTask(items, description);
+    localStorage.setItem('items', JSON.stringify(items));
+    renderTasks();
+    input.value = '';
+  }
 });
 
 renderTasks();

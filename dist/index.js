@@ -7,39 +7,124 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-// eslint-disable-next-line no-unused-vars
+/* harmony import */ var _modules_status_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+/* harmony import */ var _modules_Add_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
+/* harmony import */ var _modules_delete_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(14);
 
 
 
-const tasks = [
-  { description: 'Buy milk', completed: false, index: 0 },
-  { description: 'Do laundry', completed: true, index: 1 },
-  { description: 'Call mom', completed: false, index: 2 },
-  { description: 'Take out the trash', completed: true, index: 3 },
-];
+
+
+
+
+const taskList = document.getElementById('task-list');
+const form = document.querySelector('form');
+
+let items = JSON.parse(localStorage.getItem('items')) || [];
+
 function renderTasks() {
-  const taskList = document.getElementById('task-list');
   taskList.innerHTML = '';
-  const sortedTasks = tasks.sort((a, b) => a.index - b.index);
-  sortedTasks.forEach((task) => {
+  items.forEach((task) => {
     const listItem = document.createElement('li');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = task.completed;
-    checkbox.addEventListener('click', () => {
-      task.completed = !task.completed;
+    checkbox.addEventListener('change', () => {
+      (0,_modules_status_js__WEBPACK_IMPORTED_MODULE_2__.updateCompletedStatus)(task, items);
+      localStorage.setItem('items', JSON.stringify(items));
       renderTasks();
     });
+
+    const labelWrapper = document.createElement('div');
+    labelWrapper.classList.add('label-wrapper');
+
     const label = document.createElement('label');
     label.innerText = task.description;
     label.style.textDecoration = task.completed ? 'line-through' : 'none';
-    listItem.appendChild(checkbox);
-    listItem.appendChild(label);
+    label.addEventListener('dblclick', () => {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = task.description;
+      input.classList.add('edit-input');
+      input.addEventListener('blur', () => {
+        task.description = input.value;
+        localStorage.setItem('items', JSON.stringify(items));
+        renderTasks();
+      });
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          task.description = input.value;
+          localStorage.setItem('items', JSON.stringify(items));
+          renderTasks();
+        }
+      });
+      label.replaceWith(input);
+      input.focus();
+    });
+
+    const dotsIcon = document.createElement('i');
+    dotsIcon.classList.add('fas', 'fa-ellipsis-v', 'dots-icon');
+    dotsIcon.addEventListener('click', () => {
+      deleteIcon.style.display = 'block';
+      dotsIcon.style.display = 'none';
+    });
+
+    const deleteIcon = document.createElement('i');
+    deleteIcon.classList.add('fas', 'fa-trash', 'delete-icon');
+    deleteIcon.addEventListener('click', () => {
+      (0,_modules_delete_js__WEBPACK_IMPORTED_MODULE_4__["default"])(items, task.index);
+      localStorage.setItem('items', JSON.stringify(items));
+      renderTasks();
+    });
+    labelWrapper.appendChild(checkbox);
+    labelWrapper.appendChild(label);
+    labelWrapper.appendChild(dotsIcon);
+    labelWrapper.appendChild(deleteIcon);
+
+    listItem.appendChild(labelWrapper);
     taskList.appendChild(listItem);
   });
 }
-renderTasks();
 
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const input = document.getElementById('item');
+  const description = input.value;
+  (0,_modules_Add_js__WEBPACK_IMPORTED_MODULE_3__["default"])(items, description);
+  localStorage.setItem('items', JSON.stringify(items));
+  renderTasks();
+  input.value = '';
+});
+
+const clearButton = document.getElementById('submit');
+clearButton.addEventListener('click', () => {
+  items = (0,_modules_status_js__WEBPACK_IMPORTED_MODULE_2__.clearCompleted)(items);
+  localStorage.setItem('items', JSON.stringify(items));
+  renderTasks();
+});
+
+const plusIcon = document.querySelector('.input-icon i');
+plusIcon.addEventListener('click', () => {
+const input = document.getElementById('item');
+const description = input.value;
+(0,_modules_Add_js__WEBPACK_IMPORTED_MODULE_3__["default"])(description, items, renderTasks);
+input.value = '';
+});
+
+const addIcon = document.getElementById('add-icon');
+
+addIcon.addEventListener('click', () => {
+  const input = document.getElementById('item');
+  const description = input.value.trim();
+  if (description) {
+    (0,_modules_Add_js__WEBPACK_IMPORTED_MODULE_3__["default"])(items, description);
+    localStorage.setItem('items', JSON.stringify(items));
+    renderTasks();
+    input.value = '';
+  }
+});
+
+renderTasks();
 
 /***/ }),
 /* 1 */
@@ -17606,7 +17691,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n  background-color: white;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding-top: 50px;\r\n}\r\n\r\nmain {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  flex-direction: column;\r\n  width: 600px;\r\n  border-bottom: #e5e5e5;\r\n  box-shadow: 0 8px 16px rgb(64 83 252 / 24%);\r\n  color: black;\r\n}\r\n\r\n.head {\r\n  width: 100%;\r\n  height: auto;\r\n\r\n  /* padding: 5px; */\r\n  background-color: rgb(6, 212, 6);\r\n}\r\n\r\nform {\r\n  width: 100%;\r\n  font-style: italic;\r\n}\r\n\r\nh1 {\r\n  margin-left: 1px;\r\n  font-weight: 800;\r\n  font-size: 26px;\r\n}\r\n\r\ninput {\r\n  padding-left: 1px;\r\n}\r\n\r\n#item {\r\n  width: 99%;\r\n  height: 60px;\r\n}\r\n\r\n::placeholder {\r\n  font-style: italic;\r\n}\r\n\r\nbutton {\r\n  width: 100%;\r\n  height: 60px;\r\n  font-style: italic;\r\n}\r\n\r\n.task {\r\n  width: 100%;\r\n  border: 1px solid grey;\r\n}\r\n\r\nli {\r\n  list-style: none;\r\n  border-bottom: 1px solid grey;\r\n  height: 60px;\r\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n  background-color: white;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding-top: 50px;\r\n}\r\n\r\nmain {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  flex-direction: column;\r\n  width: 600px;\r\n  border-bottom: #e5e5e5;\r\n  box-shadow: 0 8px 16px rgb(64 83 252 / 24%);\r\n  color: black;\r\n}\r\n\r\n.input-container {\r\n  position: relative;\r\n}\r\n\r\n.input-icon {\r\n  position: absolute;\r\n  top: 50%;\r\n  right: 10px; /* adjust as needed */\r\n  transform: translateY(-50%);\r\n  z-index: 1;\r\n}\r\n\r\n.head {\r\n  width: 100%;\r\n  height: auto;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  flex-direction: row;\r\n  background-color: rgb(6, 212, 6);\r\n}\r\n\r\n.head i {\r\n  margin-top: 27px;\r\n}\r\n\r\n.fa-solid {\r\n  margin-top: 50px;\r\n  margin-right: 15px;\r\n}\r\n\r\nform {\r\n  width: 100%;\r\n  font-style: italic;\r\n}\r\n\r\nh1 {\r\n  margin-left: 1px;\r\n  font-weight: 800;\r\n  font-size: 26px;\r\n}\r\n\r\ninput {\r\n  padding-left: 1px;\r\n}\r\n\r\n#item {\r\n  width: 99%;\r\n  height: 60px;\r\n  display: flex;\r\n  flex-direction: row;\r\n  justify-content: space-between;\r\n}\r\n\r\n::placeholder {\r\n  font-style: italic;\r\n}\r\n\r\nbutton {\r\n  width: 100%;\r\n  height: 60px;\r\n  font-style: italic;\r\n}\r\n\r\n.task {\r\n  width: 100%;\r\n  border: 1px solid grey;\r\n}\r\n\r\nli {\r\n  list-style: none;\r\n  border-bottom: 1px solid grey;\r\n  height: 60px;\r\n  display: flex;\r\n  flex-direction: row;\r\n}\r\n\r\n.delete-icon {\r\n  display: none;\r\n  cursor: pointer;\r\n  font-size: 18px;\r\n  margin-left: 10px;\r\n}\r\n\r\n.dots-icon {\r\n  cursor: pointer;\r\n}\r\n\r\n.label-wrapper {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  flex: 1;\r\n}\r\n\r\n#task-list {\r\n  list-style: none;\r\n  padding: 0;\r\n  margin: 0;\r\n}\r\n\r\n#task-list li {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: space-between;\r\n  padding: 0.5rem 1rem;\r\n  border-bottom: 1px solid #ccc;\r\n}\r\n\r\n#task-list li .label-wrapper {\r\n  flex: 1;\r\n  margin-left: 1rem;\r\n}\r\n\r\n#task-list li label {\r\n  font-size: 1.2rem;\r\n  cursor: pointer;\r\n}\r\n\r\n#task-list li .three-dots {\r\n  cursor: pointer;\r\n}\r\n\r\n#task-list li .delete-button {\r\n  color: red;\r\n  margin-left: 1rem;\r\n  cursor: pointer;\r\n  display: none;\r\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -17712,6 +17797,66 @@ module.exports = function (cssWithMappingToString) {
   };
   return list;
 };
+
+/***/ }),
+/* 12 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "clearCompleted": () => (/* binding */ clearCompleted),
+/* harmony export */   "updateCompletedStatus": () => (/* binding */ updateCompletedStatus)
+/* harmony export */ });
+function updateCompletedStatus(task, items) {
+  const index = items.findIndex((item) => item.index === task.index);
+  items[index].completed = !items[index].completed;
+}
+
+function clearCompleted(items) {
+  return items.filter((task) => !task.completed);
+}
+
+
+/***/ }),
+/* 13 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function addTask(items, description) {
+  const newTask = {
+    description,
+    completed: false,
+    index: items.length,
+  };
+  items.push(newTask);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (addTask);
+
+
+
+/***/ }),
+/* 14 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function deleteTask(items, index) {
+  items.splice(index, 1);
+  items.forEach((task, index) => {
+    task.index = index;
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (deleteTask);
+
 
 /***/ })
 ],
