@@ -8,8 +8,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var _modules_status_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
-/* harmony import */ var _modules_add_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
-// eslint-disable-next-line no-unused-vars
+/* harmony import */ var _modules_Add_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
+/* harmony import */ var _modules_delete_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(14);
 
 
 
@@ -72,7 +72,9 @@ function renderTasks() {
     const deleteIcon = document.createElement('i');
     deleteIcon.classList.add('fas', 'fa-trash', 'delete-icon');
     deleteIcon.addEventListener('click', () => {
-      deleteTask(task.index);
+      (0,_modules_delete_js__WEBPACK_IMPORTED_MODULE_4__["default"])(items, task.index);
+      localStorage.setItem('items', JSON.stringify(items));
+      renderTasks();
     });
     labelWrapper.appendChild(checkbox);
     labelWrapper.appendChild(label);
@@ -84,32 +86,13 @@ function renderTasks() {
   });
 }
 
-
-function addTask(description) {
-  const newTask = {
-    description,
-    completed: false,
-    index: items.length,
-  };
-  items.push(newTask);
-  localStorage.setItem('items', JSON.stringify(items));
-  renderTasks();
-}
-
-function deleteTask(index) {
-  items.splice(index, 1);
-  items.forEach((task, index) => {
-    task.index = index;
-  });
-  localStorage.setItem('items', JSON.stringify(items));
-  renderTasks();
-}
-
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   const input = document.getElementById('item');
   const description = input.value;
-  addTask(description);
+  (0,_modules_Add_js__WEBPACK_IMPORTED_MODULE_3__["default"])(items, description);
+  localStorage.setItem('items', JSON.stringify(items));
+  renderTasks();
   input.value = '';
 });
 
@@ -122,10 +105,23 @@ clearButton.addEventListener('click', () => {
 
 const plusIcon = document.querySelector('.input-icon i');
 plusIcon.addEventListener('click', () => {
+const input = document.getElementById('item');
+const description = input.value;
+(0,_modules_Add_js__WEBPACK_IMPORTED_MODULE_3__["default"])(description, items, renderTasks);
+input.value = '';
+});
+
+const addIcon = document.getElementById('add-icon');
+
+addIcon.addEventListener('click', () => {
   const input = document.getElementById('item');
-  const description = input.value;
-  addTask(description);
-  input.value = '';
+  const description = input.value.trim();
+  if (description) {
+    (0,_modules_Add_js__WEBPACK_IMPORTED_MODULE_3__["default"])(items, description);
+    localStorage.setItem('items', JSON.stringify(items));
+    renderTasks();
+    input.value = '';
+  }
 });
 
 renderTasks();
@@ -17829,18 +17825,37 @@ function clearCompleted(items) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Task": () => (/* binding */ Task)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function Task(description, items) {
+function addTask(items, description) {
   const newTask = {
     description,
     completed: false,
     index: items.length,
   };
   items.push(newTask);
-  localStorage.setItem('items', JSON.stringify(items));
-  renderTasks(taskList, items);
 }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (addTask);
+
+
+
+/***/ }),
+/* 14 */
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function deleteTask(items, index) {
+  items.splice(index, 1);
+  items.forEach((task, index) => {
+    task.index = index;
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (deleteTask);
 
 
 /***/ })

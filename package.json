@@ -46,6 +46,7 @@
   "dependencies": {
     "husky": "^8.0.3",
     "lodash": "^4.17.21",
-    "nodejs": "^0.0.0"
+    "nodejs": "^0.0.0",
+    "wepback": "^1.0.0"
   }
 }

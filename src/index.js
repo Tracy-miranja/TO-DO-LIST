@@ -1,12 +1,11 @@
 /* eslint-disable no-use-before-define */
-/* eslint-disable import/no-unresolved */
-// eslint-disable-next-line no-unused-vars
+/* eslint-disable no-unused-vars */
 import _ from 'lodash';
 import './style.css';
 
 import { updateCompletedStatus, clearCompleted } from './modules/status.js';
-// eslint-disable-next-line no-unused-vars
-import { Task } from './modules/add.js';
+import addTask from './modules/Add.js';
+import deleteTask from './modules/delete.js';
 
 const taskList = document.getElementById('task-list');
 const form = document.querySelector('form');
@@ -63,7 +62,9 @@ function renderTasks() {
     const deleteIcon = document.createElement('i');
     deleteIcon.classList.add('fas', 'fa-trash', 'delete-icon');
     deleteIcon.addEventListener('click', () => {
-      deleteTask(task.index);
+      deleteTask(items, task.index);
+      localStorage.setItem('items', JSON.stringify(items));
+      renderTasks();
     });
     labelWrapper.appendChild(checkbox);
     labelWrapper.appendChild(label);
@@ -75,31 +76,13 @@ function renderTasks() {
   });
 }
 
-function addTask(description) {
-  const newTask = {
-    description,
-    completed: false,
-    index: items.length,
-  };
-  items.push(newTask);
-  localStorage.setItem('items', JSON.stringify(items));
-  renderTasks();
-}
-
-function deleteTask(index) {
-  items.splice(index, 1);
-  items.forEach((task, index) => {
-    task.index = index;
-  });
-  localStorage.setItem('items', JSON.stringify(items));
-  renderTasks();
-}
-
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   const input = document.getElementById('item');
   const description = input.value;
-  addTask(description);
+  addTask(items, description);
+  localStorage.setItem('items', JSON.stringify(items));
+  renderTasks();
   input.value = '';
 });
 
@@ -114,8 +97,21 @@ const plusIcon = document.querySelector('.input-icon i');
 plusIcon.addEventListener('click', () => {
   const input = document.getElementById('item');
   const description = input.value;
-  addTask(description);
+  addTask(description, items, renderTasks);
   input.value = '';
+});
+
+const addIcon = document.getElementById('add-icon');
+
+addIcon.addEventListener('click', () => {
+  const input = document.getElementById('item');
+  const description = input.value.trim();
+  if (description) {
+    addTask(items, description);
+    localStorage.setItem('items', JSON.stringify(items));
+    renderTasks();
+    input.value = '';
+  }
 });
 
 renderTasks();
