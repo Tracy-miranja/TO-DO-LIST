@@ -6,6 +6,7 @@ import './style.css';
 import { updateCompletedStatus, clearCompleted } from './modules/status.js';
 import addTask from './modules/Add.js';
 import deleteTask from './modules/delete.js';
+import { markAsComplete, markAsIncomplete } from './modules/statusupdate.js';
 
 const taskList = document.getElementById('task-list');
 const form = document.querySelector('form');
