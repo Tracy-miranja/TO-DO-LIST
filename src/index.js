@@ -3,6 +3,8 @@ import _ from 'lodash';
 import './style.css';
 
 import { updateCompletedStatus, clearCompleted } from './modules/status.js';
+import  {Task} from './modules/add.js';
+
 
 const taskList = document.getElementById('task-list');
 const form = document.querySelector('form');

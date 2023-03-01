@@ -1,5 +1,4 @@
-
-exports function addTask(description) {
+export function Task(description, items) {
   const newTask = {
     description,
     completed: false,
@@ -7,5 +6,5 @@ exports function addTask(description) {
   };
   items.push(newTask);
   localStorage.setItem('items', JSON.stringify(items));
-  renderTasks();
+  renderTasks(taskList, items);
 }
