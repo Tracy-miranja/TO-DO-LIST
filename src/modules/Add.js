@@ -1,3 +1,5 @@
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable no-undef */
 export function Task(description, items) {
   const newTask = {
     description,

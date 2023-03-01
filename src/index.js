@@ -1,10 +1,12 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable import/no-unresolved */
 // eslint-disable-next-line no-unused-vars
 import _ from 'lodash';
 import './style.css';
 
 import { updateCompletedStatus, clearCompleted } from './modules/status.js';
-import  {Task} from './modules/add.js';
-
+// eslint-disable-next-line no-unused-vars
+import { Task } from './modules/add.js';
 
 const taskList = document.getElementById('task-list');
 const form = document.querySelector('form');
@@ -72,7 +74,6 @@ function renderTasks() {
     taskList.appendChild(listItem);
   });
 }
-
 
 function addTask(description) {
   const newTask = {
