@@ -1,9 +1,14 @@
 body {
   background-color: white;
+}
+.contain{
   display: flex;
   justify-content: center;
   align-items: center;
   padding-top: 50px;
+  background-image: "./imges/cartoon.jpg";
+  background-size: contain;
+  width: 100%;
 }
 
 main {
@@ -153,4 +158,25 @@ li {
 
 #icon.clicked {
   animation: spin 1s linear infinite;
+}
+.nav-link{
+  height: 30px;
+  background-color: green;
+  border-bottom: #e5e5e5;
+  box-shadow: 0 8px 16px rgb(64 83 252 / 24%);
+  display: flex;
+  width: 100%;
+  margin-bottom: 40px;
+}
+.footer{
+  height: 50px;
+  background-color: green;
+  border-bottom: #e5e5e5;
+  box-shadow: 0 8px 16px rgb(64 83 252 / 24%);
+  display: flex;
+  width: 100%;
+  bottom: 0px;
+  position: fixed;
+  color: #e5e5e5;
+  text-align: center;
 }

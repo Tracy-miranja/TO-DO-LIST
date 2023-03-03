@@ -47,7 +47,7 @@ One attachment
  
 ## 🚀 Live Demo <a name="live-demo"></a>
  
-- [>LIVE DEMO NOT AVAILABLE]
+- [LIVE DEMO](https://tracy-miranja.github.io/TO-DO-LIST/dist/)
  
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
  

@@ -2,6 +2,8 @@
 /* eslint-disable no-unused-vars */
 import _ from 'lodash';
 import './style.css';
+import myImage from './imges/cartoon.jpg';
+
 
 import { updateCompletedStatus, clearCompleted } from './modules/status.js';
 import addTask from './modules/Add.js';
@@ -114,5 +116,8 @@ addIcon.addEventListener('click', () => {
     input.value = '';
   }
 });
+const img = document.querrySelector('.contain');
+img.src = myImage;
+document.body.appendChild(img);
 
 renderTasks();
